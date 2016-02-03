@@ -1,4 +1,16 @@
 <?php
+
 return array(
-    // 'an english string' => 'The displayed english string',
+    'Company' => 'Company',
+    'Customer' => 'Customer',
+    'Email' => 'Email',
+    'Firstname' => 'Firstname',
+    'From' => 'From',
+    'Invoice reference' => 'Invoice reference',
+    'Lastname' => 'Lastname',
+    'Order reference' => 'Order reference',
+    'Searching customer' => 'Searching customers',
+    'Searching orders' => 'Searching orders',
+    'Status' => 'Status',
+    'To' => 'To',
 );

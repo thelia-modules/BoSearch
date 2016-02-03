@@ -26,6 +26,7 @@ class BoSearch extends BaseModule
             [
                 'code' => 'bosearch.customer-search.form',
                 'type' => TemplateDefinition::BACK_OFFICE,
+                'active' => true,
                 'title' => [
                     'en_US' => 'Extend customer search form',
                     'fr_FR' => 'Étend le formulaire de recherche de clients'
@@ -34,6 +35,7 @@ class BoSearch extends BaseModule
             [
                 'code' => 'bosearch.order-search.form',
                 'type' => TemplateDefinition::BACK_OFFICE,
+                'active' => true,
                 'title' => [
                     'en_US' => 'Extend order search form',
                     'fr_FR' => 'Étend le formulaire de recherche de commandes'
