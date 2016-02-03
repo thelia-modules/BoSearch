@@ -1,0 +1,21 @@
+{javascripts file='assets/js/moment-with-locales.min.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+{javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+<script type="text/javascript">
+
+    {$langcode = {lang attr="code"}|substr:0:2}
+
+    jQuery(function($){
+        $('.is-calendar-input').datetimepicker( {
+            locale: "{$langcode}",
+            viewMode: 'days',
+            format: 'DD/MM/YYYY'
+        });
+    });
+
+</script>

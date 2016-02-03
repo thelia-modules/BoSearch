@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="customer.search" path="/admin/module/bosearch/customer-search" methods="post">
+        <default key="_controller">BoSearch:Customer:search</default>
+    </route>
+
+    <route id="order.search" path="/admin/module/bosearch/order-search" methods="post">
+        <default key="_controller">BoSearch:Order:search</default>
+    </route>
+
+</routes>

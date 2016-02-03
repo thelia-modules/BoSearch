@@ -1,0 +1,120 @@
+<div class="general-block-decorator">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="title title-without-tabs">
+                {intl l="Search" d="bosearch.bo.default"}
+            </div>
+
+            {form name='order-search-form'}
+                <form action="{url path='/admin/module/bosearch/order-search'}" method="post">
+
+                    {form_hidden_fields form=$form}
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            {form_field form=$form field="ref"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="invoiceRef"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="company"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="customer"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-1">
+                            {form_field form=$form field="status"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <select multiple class="form-control" name="{$name}" id="{$label_attr.for}">
+                                        {loop type='order-status' name='order-status'}
+                                            <option value="{$ID}">{$TITLE}</option>
+                                        {/loop}
+                                    </select>
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="orderDateMin"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="orderDateMax"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            {/form_field}
+                        </div>
+                    </div>
+
+                    {hook name='bosearch.order-search.form'}
+
+                    <button class="btn btn-info">{intl l='Search' d='bosearch.bo.default'}</button>
+
+                </form>
+            {/form}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="general-block-decorator">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="title title-without-tabs">
+                {intl l="Search" d="bosearch.bo.default"}
+            </div>
+
+            {form name='customer-search-form'}
+                <form action="{url path='/admin/module/bosearch/customer-search'}" method="post">
+
+                    {form_hidden_fields form=$form}
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            {form_field form=$form field="company"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="lastname"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="firstname"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
+                            {form_field form=$form field="email"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                </div>
+                            {/form_field}
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-2">
+                            {form_field form=$form field="subscriptionDateMin"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3 col-md-offset-2">
+                            {form_field form=$form field="subscriptionDateMax"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            {/form_field}
+                        </div>
+                    </div>
+
+                    {hook name='bosearch.customer-search.form'}
+
+                    <button class="btn btn-info">{intl l='Search' d='bosearch.bo.default'}</button>
+
+                </form>
+            {/form}
+        </div>
+    </div>
+</div>
