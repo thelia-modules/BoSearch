@@ -1,17 +1,17 @@
 # Bo Search
 
-Add a short description here. You can also add a screenshot if needed.
+Add search forms to filter customers and orders.
 
 ## Installation
 
 ### Manually
 
 * Copy the module into ```<thelia_root>/local/modules/``` directory and be sure that the name of the module is BoSearch.
-* Activate it in your thelia administration panel
+* Activate it in your Thelia administration panel
 
 ### Composer
 
-Add it in your main thelia composer.json file
+Add it in your main Thelia composer.json file
 
 ```
 composer require thelia/bo-search-module:~1.0
@@ -19,37 +19,19 @@ composer require thelia/bo-search-module:~1.0
 
 ## Usage
 
-Explain here how to use your module, how to configure it, etc.
+Once activated, inputs will appear on the top of the customer and the order list pages. Use them to filter displayed results.
 
 ## Hook
 
-If your module use one or more hook, fill this part. Explain which hooks are used.
+Two hooks are added by this module, allowing you to extend forms.
+
+`bosearch.customer-search.form`: between the last customer's form input and the submit button.
+`bosearch.order-search.form`: between the last order's form input and the submit button.
 
 
-## Loop
+Then extend the forms in your extension module's EventListener class:
 
-If your module declare one or more loop, describe them here like this :
-
-[loop name]
-
-### Input arguments
-
-|Argument |Description |
-|---      |--- |
-|**arg1** | describe arg1 with an exemple. |
-|**arg2** | describe arg2 with an exemple. |
-
-### Output arguments
-
-|Variable   |Description |
-|---        |--- |
-|$VAR1    | describe $VAR1 variable |
-|$VAR2    | describe $VAR2 variable |
-
-### Exemple
-
-Add a complete exemple of your loop
-
-## Other ?
-
-If you have other think to put, feel free to complete your readme as you want.
+```
+TheliaEvents::FORM_AFTER_BUILD . '.customer-search-form' => ['yourFunction', 128],
+TheliaEvents::FORM_AFTER_BUILD . '.orderer-search-form' => ['yourFunction', 128]
+```
