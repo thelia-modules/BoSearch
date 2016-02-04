@@ -22,8 +22,6 @@
             <tag name="hook.event_listener" event="customers.js" type="back" templates="render:assets/js/bo-search.html" />
             <tag name="hook.event_listener" event="orders.top" type="back" templates="render:order-search.html" />
             <tag name="hook.event_listener" event="orders.js" type="back" templates="render:assets/js/bo-search.html" />
-            <tag name="hook.event_listener" event="orders.js" type="back" templates="css:assets/css/bootstrap-multiselect.css" />
-            <tag name="hook.event_listener" event="orders.js" type="back" templates="js:assets/js/bootstrap-multiselect.js" />
         </hook>
     </hooks>
 

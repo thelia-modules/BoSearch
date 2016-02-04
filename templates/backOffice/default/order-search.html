@@ -69,9 +69,31 @@
                                         {$label}
                                     </label>
 
-                                    <select multiple class="form-control" name="{$name}" id="{$label_attr.for}">
+                                    <select multiple class="selectpicker" name="{$name}" id="{$label_attr.for}">
+
+                                        {* Handle labels *}
+                                        {assign var='labels' value=[
+                                            'order_not_paid' => 'warning',
+                                            'order_paid' => 'success',
+                                            'order_processing' => 'primary',
+                                            'order_sent' => 'info',
+                                            'order_canceled' => 'danger',
+                                            'order_refunded' => 'order-refunded-color']
+                                        }
+
                                         {loop type='order-status' name='order-status'}
-                                            <option value="{$ID}">{$TITLE}</option>
+
+                                            {assign "orderStatusCode" "order_$CODE"}
+
+                                            {if $labels[$orderStatusCode] != NULL}
+                                                {assign "defaultLabel" ''}
+                                                {assign "orderStatusLabel" $labels[$orderStatusCode]}
+                                            {else}
+                                                {assign "defaultLabel" "label-default"}
+                                                {assign "orderStatusLabel" $CODE}
+                                            {/if}
+
+                                            <option value="{$ID}" data-content="<span class='label {$defaultLabel} label-{$orderStatusLabel}'>{$TITLE}</span>">{$TITLE}</option>
                                         {/loop}
                                     </select>
                                 </div>

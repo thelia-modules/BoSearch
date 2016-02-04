@@ -6,6 +6,11 @@
     <script src="{$asset_url}"></script>
 {/javascripts}
 
+{javascripts file='assets/js/bootstrap-select/bootstrap-select.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+
 <script type="text/javascript">
 
     {$langcode = {lang attr="code"}|substr:0:2}
@@ -16,6 +21,8 @@
             viewMode: 'days',
             format: 'DD/MM/YYYY'
         });
+
+        $('.selectpicker').selectpicker();
     });
 
 </script>
