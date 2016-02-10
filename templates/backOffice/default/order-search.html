@@ -60,9 +60,24 @@
                         </div>
                     </div>
 
-
                     <div class="row">
-                        <div class="col-md-3 col-md-offset-1">
+                        <div class="col-md-3">
+                            {form_field form=$form field="paymentModule"}
+                                <div class="form-group">
+                                    <label class="control-label" for="{$label_attr.for}">
+                                        {$label}
+                                    </label>
+
+                                    <select multiple class="selectpicker" name="{$name}" id="{$label_attr.for}">
+                                        {loop type='module' name='payment-modules' module_type=3}
+                                            <option value="{$ID}">{$TITLE}</option>
+                                        {/loop}
+                                    </select>
+                                </div>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-md-3">
                             {form_field form=$form field="status"}
                                 <div class="form-group">
                                     <label class="control-label" for="{$label_attr.for}">

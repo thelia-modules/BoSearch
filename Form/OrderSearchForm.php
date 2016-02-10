@@ -4,6 +4,7 @@ namespace BoSearch\Form;
 
 use BoSearch\BoSearch;
 use Thelia\Form\BaseForm;
+use Thelia\Model\ModuleQuery;
 use Thelia\Model\OrderStatusQuery;
 
 /**
@@ -20,6 +21,7 @@ class OrderSearchForm extends BaseForm
      */
     protected function buildForm()
     {
+        // Initialize status
         $statusArray = [];
         $statusList = OrderStatusQuery::create()
             ->find();
@@ -27,6 +29,16 @@ class OrderSearchForm extends BaseForm
         /** @var \Thelia\Model\OrderStatus $status */
         foreach ($statusList as $status) {
             $statusArray[$status->getId()] = $status->getTitle();
+        }
+
+        // Initialize payment modules
+        $paymentModuleArray = [];
+        $paymentModuleList = ModuleQuery::create()
+            ->findByType(3);
+
+        /** @var \Thelia\Model\Module $paymentModule */
+        foreach ($paymentModuleList as $paymentModule) {
+            $paymentModuleArray[$paymentModule->getId()] = $paymentModule->getTitle();
         }
 
         $this->formBuilder
@@ -60,6 +72,16 @@ class OrderSearchForm extends BaseForm
                 [
                     'label' => $this->translator->trans('Customer', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'customer'],
+                    'required' => false
+                ]
+            )->add(
+                'paymentModule',
+                'choice',
+                [
+                    'choices' =>  $paymentModuleArray,
+                    'multiple' => true,
+                    'label' => $this->translator->trans('Payment mean', [], BoSearch::DOMAIN_NAME),
+                    'label_attr' => ['for' => 'paymentModule'],
                     'required' => false
                 ]
             )->add(

@@ -9,6 +9,7 @@ return array(
     'Invoice reference' => 'Numéro de facture',
     'Lastname' => 'Nom',
     'Order reference' => 'Numéro de commande',
+    'Payment mean' => 'Moyen de paiement',
     'Searching customer' => 'Recherche de clients',
     'Searching orders' => 'Recherche de commandes',
     'Status' => 'Statut',

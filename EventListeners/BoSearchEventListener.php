@@ -148,6 +148,11 @@ class BoSearchEventListener implements EventSubscriberInterface
                 $search->groupById();
             }
 
+            // Filter by payment module
+            if ($data['paymentModule'] != null ) {
+                $search->filterByPaymentModuleId($data['paymentModule']);
+            }
+
             // Filter by status
             if ($data['status'] != null) {
                 $search->filterByStatusId($data['status']);
