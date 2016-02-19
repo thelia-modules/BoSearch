@@ -45,6 +45,8 @@ class OrderController extends BaseAdminController
             );
         }
 
+        $this->getParserContext()->addForm($baseForm);
+
         return $this->render(
             'orders',
             [

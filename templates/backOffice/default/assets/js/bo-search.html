@@ -16,13 +16,23 @@
     {$langcode = {lang attr="code"}|substr:0:2}
 
     jQuery(function($){
+        // Calendar inputs
         $('.is-calendar-input').datetimepicker( {
             locale: "{$langcode}",
             viewMode: 'days',
             format: 'DD/MM/YYYY'
         });
 
-        $('.selectpicker').selectpicker();
+        // Multiselect inputs
+        var $selectpickers = $('.selectpicker');
+        $selectpickers.selectpicker();
+
+        // Clean inputs
+        $("#clear-selection").click(function(ev) {
+            ev.preventDefault();
+            $('input').val('');
+            $selectpickers.selectpicker('deselectAll');
+        });
     });
 
 </script>

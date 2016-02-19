@@ -18,7 +18,7 @@
                                         {$label}
                                     </label>
 
-                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
                                 </div>
                             {/form_field}
                         </div>
@@ -30,7 +30,7 @@
                                         {$label}
                                     </label>
 
-                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
                                 </div>
                             {/form_field}
                         </div>
@@ -42,7 +42,7 @@
                                         {$label}
                                     </label>
 
-                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
                                 </div>
                             {/form_field}
                         </div>
@@ -54,7 +54,7 @@
                                         {$label}
                                     </label>
 
-                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" />
+                                    <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
                                 </div>
                             {/form_field}
                         </div>
@@ -70,7 +70,7 @@
                                     </label>
 
                                     <div class="input-group">
-                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" value="{$value}" />
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                     </label>
 
                                     <div class="input-group">
-                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" />
+                                        <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" value="{$value}" />
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </div>
                                 </div>
@@ -95,7 +95,9 @@
 
                     {hook name='bosearch.customer-search.form'}
 
-                    <button class="btn btn-info">{intl l='Search' d='bosearch.bo.default'}</button>
+                    <button class="btn btn-info" type="submit">{intl l='Search' d='bosearch.bo.default'}</button>
+
+                    <button class="btn btn-xs btn-default pull-right" id="clear-selection" type="button">{intl l='Clean selection' d='bosearch.bo.default'}</button>
 
                 </form>
             {/form}
