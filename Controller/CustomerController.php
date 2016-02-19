@@ -45,6 +45,8 @@ class CustomerController extends BaseAdminController
             );
         }
 
+        $this->getParserContext()->addForm($baseForm);
+
         return $this->render('customers');
     }
 }
