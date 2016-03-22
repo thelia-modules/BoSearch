@@ -27,6 +27,9 @@
         var $selectpickers = $('.selectpicker');
         $selectpickers.selectpicker();
 
+        // Remove 'icon-ok' class
+        $('div.bootstrap-select div ul li a i.icon-ok').removeClass('icon-ok');
+
         // Clean inputs
         $("#clear-selection").click(function(ev) {
             ev.preventDefault();
