@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <services>
-        <service id="bosearch.services" class="BoSearch\EventListeners\BoSearchEventListener" scope="request">
+        <service id="bosearch.services" class="BoSearch\EventListeners\BoSearchEventListener">
             <argument id="request" type="service"/>
             <tag name="kernel.event_subscriber"/>
         </service>

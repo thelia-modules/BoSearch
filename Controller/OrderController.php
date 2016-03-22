@@ -4,6 +4,7 @@ namespace BoSearch\Controller;
 
 use BoSearch\BoSearch;
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Form\Exception\FormValidationException;
@@ -15,7 +16,7 @@ use Thelia\Form\Exception\FormValidationException;
  */
 class OrderController extends BaseAdminController
 {
-    public function searchAction()
+    public function searchAction(Request $request)
     {
         if (null !== $response = $this->checkAuth([AdminResources::MODULE], ["bosearch"], AccessManager::VIEW)) {
             return $response;
@@ -28,7 +29,7 @@ class OrderController extends BaseAdminController
             $form = $this->validateForm($baseForm);
 
             // Set parsed data in the request to keep Datetime format for dates
-            $this->getRequest()->request->set(BoSearch::PARSED_DATA, $form->getData());
+            $request->request->set(BoSearch::PARSED_DATA, $form->getData());
 
         } catch (FormValidationException $ex) {
             $error_message = $this->createStandardFormValidationErrorMessage($ex);
