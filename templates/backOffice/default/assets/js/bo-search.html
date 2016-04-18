@@ -25,7 +25,9 @@
 
         // Multiselect inputs
         var $selectpickers = $('.selectpicker');
-        $selectpickers.selectpicker();
+        $selectpickers.selectpicker({
+            noneSelectedText: "{intl l='Nothing selected' d='bosearch.bo.default'}"
+        });
 
         // Remove 'icon-ok' class
         $('div.bootstrap-select div ul li a i.icon-ok').removeClass('icon-ok');
