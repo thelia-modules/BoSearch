@@ -4,16 +4,16 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>BoSearch\BoSearch</fullnamespace>
     <descriptive locale="en_US">
-        <title>Search customers, orders more precisely and more quickly.</title>
+        <title>Search customers, orders, products more precisely and more quickly.</title>
     </descriptive>
     <descriptive locale="fr_FR">
-        <title>Recherche plus précisément et plus rapidement des clients, des commandes.</title>
+        <title>Recherche plus précisément et plus rapidement des clients, des commandes, des produits.</title>
     </descriptive>
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
     <authors>
         <author>
             <name>Etienne Perriere</name>

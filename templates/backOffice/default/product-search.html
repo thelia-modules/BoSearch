@@ -1,0 +1,143 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+  {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='Search products' d='bosearch.bo.default'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}BoSearch{/block}
+
+{block name="main-content"}
+  <div id="wrapper" class="container">
+
+    {if $general_error}
+      <div class="alert alert-danger">
+        {$general_error}
+      </div>
+    {/if}
+
+    <div class="general-block-decorator">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="title title-without-tabs">
+            {intl l='Search' d='bosearch.bo.default'}
+          </div>
+
+          {form name='product-search-form'}
+            <form action="{url path='/admin/module/bosearch/product-search'}" method="post">
+
+              {form_hidden_fields form=$form}
+
+              <div class="row">
+                <div class="col-md-3">
+                  {form_field form=$form field="product_id"}
+                    <div class="form-group">
+                      <label class="control-label" for="{$label_attr.for}">
+                        {$label}
+                      </label>
+
+                      <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
+                    </div>
+                  {/form_field}
+                </div>
+
+                <div class="col-md-3">
+                  {form_field form=$form field="ref"}
+                    <div class="form-group">
+                      <label class="control-label" for="{$label_attr.for}">
+                        {$label}
+                      </label>
+
+                      <input type="text" id="{$label_attr.for}" class="form-control" name="{$name}" value="{$value}" />
+                    </div>
+                  {/form_field}
+                </div>
+
+                <div class="col-md-3">
+                  {form_field form=$form field="category"}
+                    <div class="form-group">
+                      <label class="control-label" for="{$label_attr.for}">
+                        {$label}
+                      </label>
+
+                      <select multiple class="selectpicker" name="{$name}" id="{$label_attr.for}">
+                        {loop type='category' name='categories-list'}
+                          <option value="{$ID}" {if $ID|in_array:$value}selected{/if}>{$TITLE}</option>
+                        {/loop}
+                      </select>
+                    </div>
+                  {/form_field}
+                </div>
+
+                <div class="col-md-3">
+                  {form_field form=$form field="is_visible"}
+                    <div class="form-group">
+                      <label class="control-label" for="{$label_attr.for}">
+                        {$label}
+                      </label>
+
+                      <select class="selectpicker" name="{$name}" id="{$label_attr.for}">
+                          <option value="all" {if $value == 'all'}selected{/if}>{intl l='All' d='bosearch.bo.default'}</option>
+                          <option value="yes" {if $value == 'yes'}selected{/if}>{intl l='Yes' d='bosearch.bo.default'}</option>
+                          <option value="no" {if $value == 'no'}selected{/if}>{intl l='No' d='bosearch.bo.default'}</option>
+                      </select>
+                    </div>
+                  {/form_field}
+                </div>
+
+              </div>
+
+              {hook name='bosearch.product-search.form'}
+
+              <button class="btn btn-info" type="submit">{intl l='Search' d='bosearch.bo.default'}</button>
+
+              <button class="btn btn-xs btn-default pull-right" id="clear-selection" type="button">{intl l='Clean selection' d='bosearch.bo.default'}</button>
+
+            </form>
+          {/form}
+        </div>
+      </div>
+    </div>
+    <div class="general-block-decorator">
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>{intl l='ID' d='bosearch.bo.default'}</th>
+                <th>{intl l='Ref' d='bosearch.bo.default'}</th>
+                <th>{intl l='Title' d='bosearch.bo.default'}</th>
+                <th>{intl l='Default category' d='bosearch.bo.default'}</th>
+                <th>{intl l='Price' d='bosearch.bo.default'}</th>
+                <th>{intl l='Visible' d='bosearch.bo.default'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {if $search}
+                {loop type='product' name='searched-products'}
+                  <tr>
+                    <td>{$ID}</td>
+                    <td>
+                      <a href="{url path='/admin/products/update' product_id=$ID}">{$REF}</a>
+                    </td>
+                    <td>{$TITLE}</td>
+                    <td>{loop type='category' name='parent-category' id=$DEFAULT_CATEGORY}{$TITLE}{/loop}</td>
+                    <td>{$BEST_PRICE}</td>
+                    <td>{$VISIBLE}</td>
+                  </tr>
+                {/loop}
+              {/if}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{/block}
+
+{block name="javascript-initialization"}
+  {include file="assets/js/bo-search.html"}
+{/block}

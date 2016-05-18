@@ -6,14 +6,17 @@ use BoSearch\BoSearch;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\Join;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Thelia\Core\Event\Loop\LoopExtendsArgDefinitionsEvent;
 use Thelia\Core\Event\Loop\LoopExtendsBuildModelCriteriaEvent;
 use Thelia\Core\Event\Loop\LoopExtendsInitializeArgsEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\HttpFoundation\Request;
+use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Model\Map\AddressTableMap;
 use Thelia\Model\Map\CustomerTableMap;
 use Thelia\Model\Map\OrderAddressTableMap;
 use Thelia\Model\Map\OrderTableMap;
+use Thelia\Model\Map\ProductTableMap;
 
 /**
  * Class BoSearchEventListener
@@ -179,6 +182,47 @@ class BoSearchEventListener implements EventSubscriberInterface
         }
     }
 
+    public function extendProductBuildModelCriteria(LoopExtendsBuildModelCriteriaEvent $event)
+    {
+        // Get form data
+        $data = $this->request->request->get(BoSearch::PARSED_DATA);
+
+        if ($data != null) {
+            /** @var \Thelia\Model\ProductQuery $search */
+            $search = $event->getModelCriteria();
+
+
+            // Filter by product ID
+            if ($data['product_id'] != null) {
+                $search->filterById($data['product_id']);
+            }
+
+            // Filter by product reference
+            if ($data['ref'] != null) {
+                $search->filterByRef("%".$data['ref']."%", Criteria::LIKE);
+            }
+
+            // Filter by categories
+            if ($data['category'] != null ) {
+                $search
+                    ->useProductCategoryQuery('CategorySelect')
+                        ->filterByCategoryId($data['category'], Criteria::IN)
+                    ->endUse();
+            }
+
+            // Filter by visible
+            $search->remove(ProductTableMap::VISIBLE);
+
+            if ($data['is_visible'] != null) {
+                if ($data['is_visible'] == 'yes') {
+                    $search->filterByVisible(1);
+                } elseif ($data['is_visible'] == 'no') {
+                    $search->filterByVisible(0);
+                }
+            }
+        }
+    }
+
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
@@ -191,7 +235,9 @@ class BoSearchEventListener implements EventSubscriberInterface
         return [
             TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_BUILD_MODEL_CRITERIA, 'customer') => ['extendCustomerLoop', 128],
             TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_BUILD_MODEL_CRITERIA, 'order') => ['extendOrderLoop', 128],
-            TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_INITIALIZE_ARGS, 'order') => ['changeLimit', 128]
+            TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_INITIALIZE_ARGS, 'order') => ['changeLimit', 128],
+            TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_BUILD_MODEL_CRITERIA, 'product') => ['extendProductBuildModelCriteria', 120],
+
         ];
     }
 }

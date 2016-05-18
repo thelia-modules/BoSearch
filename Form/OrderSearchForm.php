@@ -23,8 +23,7 @@ class OrderSearchForm extends BaseForm
     {
         // Initialize status
         $statusArray = [];
-        $statusList = OrderStatusQuery::create()
-            ->find();
+        $statusList = (new OrderStatusQuery)->find();
 
         /** @var \Thelia\Model\OrderStatus $status */
         foreach ($statusList as $status) {
@@ -33,8 +32,7 @@ class OrderSearchForm extends BaseForm
 
         // Initialize payment modules
         $paymentModuleArray = [];
-        $paymentModuleList = ModuleQuery::create()
-            ->findByType(3);
+        $paymentModuleList = (new ModuleQuery)->findByType(3);
 
         /** @var \Thelia\Model\Module $paymentModule */
         foreach ($paymentModuleList as $paymentModule) {

@@ -14,14 +14,19 @@
     <forms>
         <form name="customer-search-form" class="BoSearch\Form\CustomerSearchForm" />
         <form name="order-search-form" class="BoSearch\Form\OrderSearchForm" />
+        <form name="product-search-form" class="BoSearch\Form\ProductSearchForm" />
     </forms>
 
     <hooks>
-        <hook id="bosearch.hook" scope="request">
+        <hook id="bosearch.hook">
             <tag name="hook.event_listener" event="customer.top" type="back" templates="render:customer-search.html" />
             <tag name="hook.event_listener" event="customers.js" type="back" templates="render:assets/js/bo-search.html" />
             <tag name="hook.event_listener" event="orders.top" type="back" templates="render:order-search.html" />
             <tag name="hook.event_listener" event="orders.js" type="back" templates="render:assets/js/bo-search.html" />
+        </hook>
+        <hook id="bosearch.product.hook" class="BoSearch\Hook\BoSearchHook">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" method="onMainTopMenuTools"/>
+            <argument type="service" id="router.bosearch"/>
         </hook>
     </hooks>
 

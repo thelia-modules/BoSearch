@@ -4,12 +4,20 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="customer.search" path="/admin/module/bosearch/customer-search" methods="post">
+    <route id="bosearch.customer.search" path="/admin/module/bosearch/customer-search" methods="post">
         <default key="_controller">BoSearch:Customer:search</default>
     </route>
 
-    <route id="order.search" path="/admin/module/bosearch/order-search" methods="post">
+    <route id="bosearch.order.search" path="/admin/module/bosearch/order-search" methods="post">
         <default key="_controller">BoSearch:Order:search</default>
+    </route>
+
+    <route id="bosearch.product.view" path="/admin/module/bosearch/product-view">
+        <default key="_controller">BoSearch:Product:viewProductSearch</default>
+    </route>
+
+    <route id="bosearch.product.search" path="/admin/module/bosearch/product-search" methods="post">
+        <default key="_controller">BoSearch:Product:search</default>
     </route>
 
 </routes>
