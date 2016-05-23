@@ -64,7 +64,7 @@
                       </label>
 
                       <select multiple class="selectpicker" name="{$name}" id="{$label_attr.for}">
-                        {loop type='category' name='categories-list'}
+                        {loop type='category' name='categories-list' order='alpha'}
                           <option value="{$ID}" {if $ID|in_array:$value}selected{/if}>{$TITLE}</option>
                         {/loop}
                       </select>
