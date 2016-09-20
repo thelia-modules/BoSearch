@@ -177,7 +177,7 @@ class BoSearchEventListener implements EventSubscriberInterface
         $parameters = $event->getLoopParameters();
 
         if ($parameters['limit'] != null && $data != null) {
-            $parameters['limit'] = 200;
+            $parameters['limit'] = 9999999;
             $event->setLoopParameters($parameters);
         }
     }
