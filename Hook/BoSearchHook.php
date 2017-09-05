@@ -4,7 +4,7 @@ namespace BoSearch\Hook;
 
 use BoSearch\BoSearch;
 use Symfony\Component\Routing\RouterInterface;
-use Thelia\Core\Event\Hook\HookRenderBlockEvent;
+use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\SecurityContext;
@@ -31,7 +31,7 @@ class BoSearchHook extends BaseHook
         $this->securityContext = $securityContext;
     }
 
-    public function onMainTopMenuTools(HookRenderBlockEvent $event)
+    public function onMainTopMenuTools(HookRenderEvent $event)
     {
         $isGranted = $this->securityContext->isGranted(
             ["ADMIN"],
@@ -41,12 +41,7 @@ class BoSearchHook extends BaseHook
         );
 
         if ($isGranted) {
-            $event->add(
-                [
-                    'title' => $this->trans('Search product', [], BoSearch::DOMAIN_NAME),
-                    'url' => $this->router->generate('bosearch.product.view')
-                ]
-            );
+            $event->add($this->render("menu-hook.html", $event->getArguments()));
         }
     }
 }

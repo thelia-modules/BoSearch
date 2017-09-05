@@ -1,6 +1,6 @@
 # Bo Search
 
-Add search forms to filter customers and orders.
+Add search forms to filter customers, orders and products
 
 ## Installation
 
@@ -20,6 +20,7 @@ composer require thelia/bo-search-module:~1.0
 ## Usage
 
 Once activated, inputs will appear on the top of the customer and the order list pages. Use them to filter displayed results.
+You will find the product search page in the back-office menu "Search products".
 
 ## Hook
 

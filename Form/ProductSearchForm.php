@@ -72,6 +72,56 @@ class ProductSearchForm extends BaseForm
                     'label_attr' => ['for' => 'is_visible'],
                     'required' => false
                 ]
+            )->add(
+                'is_new',
+                'choice',
+                [
+                    'choices' => [
+                        'all' => 'all',
+                        'yes' => 'yes',
+                        'no' => 'no'
+                    ],
+                    'multiple' => false,
+                    'label' => $this->translator->trans('New', [], BoSearch::DOMAIN_NAME),
+                    'label_attr' => ['for' => 'is_new'],
+                    'required' => false
+                ]
+            )->add(
+                'is_promo',
+                'choice',
+                [
+                    'choices' => [
+                        'all' => 'all',
+                        'yes' => 'yes',
+                        'no' => 'no'
+                    ],
+                    'multiple' => false,
+                    'label' => $this->translator->trans('Sale', [], BoSearch::DOMAIN_NAME),
+                    'label_attr' => ['for' => 'is_promo'],
+                    'required' => false
+                ]
+            )->add(
+                'stock_min',
+                'number',
+                [
+                    'label' => $this->translator->trans('Minimum stock', [], BoSearch::DOMAIN_NAME),
+                    'label_attr' => ['for' => 'stock_min'],
+                    'required' => false
+                ]
+            )->add(
+                'stock_max',
+                'number',
+                [
+                    'label' => $this->translator->trans('Maximum stock', [], BoSearch::DOMAIN_NAME),
+                    'label_attr' => ['for' => 'stock_max'],
+                    'required' => false
+                ]
+            )->add(
+                'page',
+                'number',
+                [
+                    'required' => false
+                ]
             );
     }
 }

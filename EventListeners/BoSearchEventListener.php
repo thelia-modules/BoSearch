@@ -6,12 +6,10 @@ use BoSearch\BoSearch;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\Join;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Thelia\Core\Event\Loop\LoopExtendsArgDefinitionsEvent;
 use Thelia\Core\Event\Loop\LoopExtendsBuildModelCriteriaEvent;
 use Thelia\Core\Event\Loop\LoopExtendsInitializeArgsEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\HttpFoundation\Request;
-use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Model\Map\AddressTableMap;
 use Thelia\Model\Map\CustomerTableMap;
 use Thelia\Model\Map\OrderAddressTableMap;
@@ -114,7 +112,6 @@ class BoSearchEventListener implements EventSubscriberInterface
 
             // Filter by company
             if ($data['company'] != null) {
-
                 // Join invoice address
                 $orderInvoiceAddressJoin = new Join(
                     OrderTableMap::INVOICE_ORDER_ADDRESS_ID,
@@ -131,7 +128,6 @@ class BoSearchEventListener implements EventSubscriberInterface
 
             // Filter by customer
             if ($data['customer'] != null) {
-
                 // Join customer
                 $orderAddressJoin = new Join(
                     OrderTableMap::INVOICE_ORDER_ADDRESS_ID,
@@ -150,7 +146,7 @@ class BoSearchEventListener implements EventSubscriberInterface
             }
 
             // Filter by payment module
-            if ($data['paymentModule'] != null ) {
+            if ($data['paymentModule'] != null) {
                 $search->filterByPaymentModuleId($data['paymentModule']);
             }
 
@@ -203,12 +199,44 @@ class BoSearchEventListener implements EventSubscriberInterface
             }
 
             // Filter by categories
-            if ($data['category'] != null ) {
+            if ($data['category'] != null) {
                 $search
                     ->useProductCategoryQuery('CategorySelect')
                         ->filterByCategoryId($data['category'], Criteria::IN)
                     ->endUse();
             }
+
+
+            // PSE criteria
+
+            $pseQuery = $search->useProductSaleElementsQuery();
+
+            if ($data['is_new'] != null) {
+                if ($data['is_new'] == 'yes') {
+                    $pseQuery->filterByNewness(1);
+                } elseif ($data['is_new'] == 'no') {
+                    $pseQuery->filterByNewness(0);
+                }
+            }
+
+            if ($data['is_promo'] != null) {
+                if ($data['is_promo'] == 'yes') {
+                    $pseQuery->filterByPromo(1);
+                } elseif ($data['is_new'] == 'no') {
+                    $pseQuery->filterByPromo(0);
+                }
+            }
+
+            if ($data['stock_min'] != null) {
+                $pseQuery->filterByQuantity($data['stock_min'], Criteria::GREATER_EQUAL);
+            }
+
+            if ($data['stock_max'] != null) {
+                $pseQuery->filterByQuantity($data['stock_max'], Criteria::LESS_EQUAL);
+            }
+
+            $pseQuery->endUse();
+
 
             // Filter by visible
             $search->remove(ProductTableMap::VISIBLE);
