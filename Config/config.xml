@@ -25,7 +25,7 @@
             <tag name="hook.event_listener" event="orders.js" type="back" templates="render:assets/js/bo-search.html" />
         </hook>
         <hook id="bosearch.product.hook" class="BoSearch\Hook\BoSearchHook">
-            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" method="onMainTopMenuTools"/>
+            <tag name="hook.event_listener" event="main.in-top-menu-items" type="back" method="onMainTopMenuTools"/>
             <argument type="service" id="router.bosearch"/>
             <argument type="service" id="thelia.securityContext"/>
         </hook>

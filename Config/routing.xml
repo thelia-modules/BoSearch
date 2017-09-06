@@ -16,8 +16,13 @@
         <default key="_controller">BoSearch:Product:viewProductSearch</default>
     </route>
 
-    <route id="bosearch.product.search" path="/admin/module/bosearch/product-search" methods="post">
+    <route id="bosearch.product.search.get" path="/admin/module/bosearch/product-search" methods="get">
+        <default key="_controller">BoSearch:Product:viewProductSearch</default>
+    </route>
+
+    <route id="bosearch.product.search.post" path="/admin/module/bosearch/product-search" methods="post">
         <default key="_controller">BoSearch:Product:search</default>
     </route>
+
 
 </routes>

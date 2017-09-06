@@ -39,7 +39,6 @@ class ProductController extends BaseAdminController
 
             // Set parsed data in the request to keep Datetime format for dates
             $request->request->set(BoSearch::PARSED_DATA, $form->getData());
-
         } catch (FormValidationException $ex) {
             $error_message = $this->createStandardFormValidationErrorMessage($ex);
         } catch (\Exception $ex) {

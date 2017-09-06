@@ -1,7 +1,7 @@
 {extends file="admin-layout.tpl"}
 
 {block name="no-return-functions"}
-  {$admin_current_location = 'tools'}
+  {$admin_current_location = 'bosearch-product'}
 {/block}
 
 {block name="page-title"}{intl l='Search products' d='bosearch.bo.default'}{/block}
@@ -27,7 +27,7 @@
           </div>
 
           {form name='product-search-form'}
-            <form action="{url path='/admin/module/bosearch/product-search'}" method="post">
+            <form id="formSearchProduct" action="{url path='/admin/module/bosearch/product-search'}" method="post">
 
               {form_hidden_fields form=$form}
 
@@ -90,6 +90,64 @@
 
               </div>
 
+              <h4>{intl l='Attribute combinations criteria' d='bosearch.bo.default'}</h4>
+
+              <p>{intl l='The following fields are related to the attribute combinations of a product. If at least one attribute combination of a product is matching the following criteria, the product will be displayed.' d='bosearch.bo.default'}</p>
+
+              <div class="row">
+
+                <div class="col-md-3">
+                  {form_field form=$form field="is_new"}
+                  <div class="form-group">
+                    <label class="control-label" for="{$label_attr.for}">
+                      {$label}
+                    </label>
+
+                    <select class="selectpicker" name="{$name}" id="{$label_attr.for}">
+                      <option value="all" {if $value == 'all'}selected{/if}>{intl l='All' d='bosearch.bo.default'}</option>
+                      <option value="yes" {if $value == 'yes'}selected{/if}>{intl l='Yes' d='bosearch.bo.default'}</option>
+                      <option value="no" {if $value == 'no'}selected{/if}>{intl l='No' d='bosearch.bo.default'}</option>
+                    </select>
+
+                  </div>
+                  {/form_field}
+                </div>
+
+                <div class="col-md-3">
+                  {form_field form=$form field="is_promo"}
+                  <div class="form-group">
+                    <label class="control-label" for="{$label_attr.for}">
+                      {$label}
+                    </label>
+
+                    <select class="selectpicker" name="{$name}" id="{$label_attr.for}">
+                      <option value="all" {if $value == 'all'}selected{/if}>{intl l='All' d='bosearch.bo.default'}</option>
+                      <option value="yes" {if $value == 'yes'}selected{/if}>{intl l='Yes' d='bosearch.bo.default'}</option>
+                      <option value="no" {if $value == 'no'}selected{/if}>{intl l='No' d='bosearch.bo.default'}</option>
+                    </select>
+
+                  </div>
+                  {/form_field}
+                </div>
+
+                <div class="col-md-3">
+                  {render_form_field field="stock_min"}
+                </div>
+
+                <div class="col-md-3">
+                  {render_form_field field="stock_max"}
+                </div>
+
+              </div>
+
+
+              {* Hidden field for pagination *}
+
+              {form_field form=$form field="page"}
+                {$product_page=$value|default:1}
+                <input id="jsPaginationFormInput" name="{$name}" type="hidden" value="1" />
+              {/form_field}
+
               {hook name='bosearch.product-search.form'}
 
               <button class="btn btn-info" type="submit">{intl l='Search' d='bosearch.bo.default'}</button>
@@ -117,7 +175,7 @@
             </thead>
             <tbody>
               {if $search}
-                {loop type='product' name='searched-products'}
+                {loop type='product' name='searched-products' limit=20 page=$product_page}
                   <tr>
                     <td>{$ID}</td>
                     <td>
@@ -125,7 +183,7 @@
                     </td>
                     <td>{$TITLE}</td>
                     <td>{loop type='category' name='parent-category' id=$DEFAULT_CATEGORY}{$TITLE}{/loop}</td>
-                    <td>{$BEST_PRICE}</td>
+                    <td>{format_money number=$BEST_PRICE}</td>
                     <td>{$VISIBLE}</td>
                   </tr>
                 {/loop}
@@ -135,9 +193,83 @@
         </div>
       </div>
     </div>
+
+    {if $search}
+
+    <div class="text-center">
+      <ul class="pagination pagination-centered">
+        {$max_page_count=10}
+        {pageloop rel='searched-products' limit=$max_page_count}
+          {$prev_page = $PREV}
+          {$next_page = $NEXT}
+          {$last_page = $LAST}
+          {$has_prev  = $CURRENT > 1}
+          {$has_next  = $CURRENT < $LAST}
+
+          {$has_pages_after = $END < $LAST && $LAST > $max_page_count}
+          {$has_pages_before = $START > 1}
+
+          {if $PAGE == $START}
+          {if $has_prev}
+            <li><a class="jsPaginationLink" title="{intl l="Go to first page"}" href="#" data-page="1">&laquo;</a></li>
+            <li><a class="jsPaginationLink" title="{intl l="Go to previous page"}" href="#" data-page="{$prev_page}">&lsaquo;</a></li>
+
+            {if $has_pages_before}
+              <li title="{intl l="More pages before"}" class="disabled"><a href="#">&hellip;</a></li>
+            {/if}
+
+            {else}
+              <li class="disabled"><a href="#">&laquo;</a></li>
+              <li class="disabled"><a href="#">&lsaquo;</a></li>
+            {/if}
+          {/if}
+
+          {if $PAGE != $CURRENT}
+            <li><a class="jsPaginationLink" href="#" data-page="{$PAGE}">{$PAGE}</a></li>
+          {else}
+            <li class="active"><a href="#">{$PAGE}</a></li>
+          {/if}
+
+          {if $PAGE == $END}
+            {if $has_next}
+              {if $has_pages_after}
+                <li title="{intl l="More pages after"}" class="disabled"><a href="#">&hellip;</a></li>
+              {/if}
+
+              <li><a class="jsPaginationLink" title="{intl l="Go to next page"}" href="#" data-page="{$next_page}">&rsaquo;</a></li>
+              <li><a class="jsPaginationLink" title="{intl l="Go to last page"}" href="#" data-page="{$last_page}">&raquo;</a></li>
+
+            {else}
+              <li class="disabled"><a href="#">&rsaquo;</a></li>
+              <li class="disabled"><a href="#">&raquo;</a></li>
+            {/if}
+          {/if}
+        {/pageloop}
+      </ul>
+    </div>
+
+    {/if}
+
   </div>
 {/block}
 
 {block name="javascript-initialization"}
+
+  <script type="text/javascript">
+
+    {literal}
+
+    jQuery(function($){
+      $('.jsPaginationLink').click(function(ev) {
+        ev.preventDefault();
+        document.getElementById('jsPaginationFormInput').value = this.dataset.page;
+        $('#formSearchProduct').submit();
+      });
+    });
+
+    {/literal}
+
+  </script>
+
   {include file="assets/js/bo-search.html"}
 {/block}
