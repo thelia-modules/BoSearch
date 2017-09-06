@@ -222,7 +222,7 @@ class BoSearchEventListener implements EventSubscriberInterface
             if ($data['is_promo'] != null) {
                 if ($data['is_promo'] == 'yes') {
                     $pseQuery->filterByPromo(1);
-                } elseif ($data['is_new'] == 'no') {
+                } elseif ($data['is_promo'] == 'no') {
                     $pseQuery->filterByPromo(0);
                 }
             }
