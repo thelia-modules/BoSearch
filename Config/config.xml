@@ -26,6 +26,7 @@
         </hook>
         <hook id="bosearch.product.hook" class="BoSearch\Hook\BoSearchHook">
             <tag name="hook.event_listener" event="main.in-top-menu-items" type="back" method="onMainTopMenuTools"/>
+            <tag name="hook.event_listener" event="bosearch.customer-search.form" type="back" method="onBoSearchCustomerForm"/>
             <argument type="service" id="router.bosearch"/>
             <argument type="service" id="thelia.securityContext"/>
         </hook>

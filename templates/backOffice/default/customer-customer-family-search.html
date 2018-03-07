@@ -1,0 +1,14 @@
+<div class="col-md-3 ">
+    {form_field form=$form field="family"}
+    <div class="form-group">
+        <label for="{$label_attr.for}" class="control-label">
+            {$label}
+        </label>
+        <select class="form-control" name="{$name}" id="{$label_attr.for}">
+            {foreach $choices as $family}
+                <option value="{$family->value}" {if $value=="{$family->value}"}selected{/if}>{$family->label}</option>
+            {/foreach}
+        </select>
+    </div>
+    {/form_field}
+</div>

@@ -36,6 +36,7 @@
         $("#clear-selection").click(function(ev) {
             ev.preventDefault();
             $('input').val('');
+            $('select').val('all');
             $selectpickers.selectpicker('deselectAll');
         });
     });
