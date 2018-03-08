@@ -8,6 +8,7 @@ use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\SecurityContext;
+use Thelia\Model\Base\ModuleQuery;
 
 /**
  * Class BoSearchHook
@@ -42,6 +43,22 @@ class BoSearchHook extends BaseHook
 
         if ($isGranted) {
             $event->add($this->render("menu-hook.html", $event->getArguments()));
+        }
+    }
+
+    /**
+     * Search if customer family has been activated
+     * @param HookRenderEvent $event
+     */
+    public function onBoSearchCustomerForm(HookRenderEvent $event)
+    {
+        $moduleCustomerFamily = ModuleQuery::create()
+            ->filterByCode('CustomerFamily')
+            ->filterByActivate(1)
+            ->findOne();
+
+        if ($moduleCustomerFamily) {
+            $event->add($this->render('customer-customer-family-search.html'));
         }
     }
 }

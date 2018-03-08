@@ -3,18 +3,26 @@
 namespace BoSearch\EventListeners;
 
 use BoSearch\BoSearch;
+use BoSearch\Form\CustomerSearchForm;
+use CustomerFamily\Model\CustomerFamily;
+use CustomerFamily\Model\CustomerFamilyQuery;
+use CustomerFamily\Model\Map\CustomerCustomerFamilyTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\Join;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\Loop\LoopExtendsBuildModelCriteriaEvent;
 use Thelia\Core\Event\Loop\LoopExtendsInitializeArgsEvent;
 use Thelia\Core\Event\TheliaEvents;
+use Thelia\Core\Event\TheliaFormEvent;
 use Thelia\Core\HttpFoundation\Request;
+use Thelia\Core\Translation\Translator;
 use Thelia\Model\Map\AddressTableMap;
 use Thelia\Model\Map\CustomerTableMap;
 use Thelia\Model\Map\OrderAddressTableMap;
 use Thelia\Model\Map\OrderTableMap;
 use Thelia\Model\Map\ProductTableMap;
+use Thelia\Model\ModuleQuery;
+use PDO;
 
 /**
  * Class BoSearchEventListener
@@ -32,6 +40,7 @@ class BoSearchEventListener implements EventSubscriberInterface
 
     /**
      * @param LoopExtendsBuildModelCriteriaEvent $event
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function extendCustomerLoop(LoopExtendsBuildModelCriteriaEvent $event)
     {
@@ -42,7 +51,6 @@ class BoSearchEventListener implements EventSubscriberInterface
 
             /** @var \Thelia\Model\CustomerQuery $search */
             $search = $event->getModelCriteria();
-
             // Filter by company
             if ($data['company'] != null) {
                 // Join address
@@ -84,11 +92,30 @@ class BoSearchEventListener implements EventSubscriberInterface
             if ($data['subscriptionDateMax'] != null) {
                 $search->filterByCreatedAt($data['subscriptionDateMax'], Criteria::LESS_EQUAL);
             }
+
+            //Filter by Customer Family
+            if ($data['family'] != null && $data['family'] != "all") {
+                $familyCustomerFamilyBoSearch = new Join(
+                    CustomerTableMap::ID,
+                    CustomerCustomerFamilyTableMap::CUSTOMER_ID,
+                    Criteria::INNER_JOIN
+                );
+                $search->addJoinObject($familyCustomerFamilyBoSearch, 'familyCustomerFamilyBoSearch');
+                $search->addJoinCondition(
+                    'familyCustomerFamilyBoSearch',
+                    CustomerCustomerFamilyTableMap::CUSTOMER_FAMILY_ID.' = ?',
+                    $data['family'],
+                    null,
+                    PDO::PARAM_STR
+                );
+                $search->groupBy(CustomerTableMap::ID);
+            }
         }
     }
 
     /**
      * @param LoopExtendsBuildModelCriteriaEvent $event
+     * @throws \Propel\Runtime\Exception\PropelException
      */
     public function extendOrderLoop(LoopExtendsBuildModelCriteriaEvent $event)
     {
@@ -252,6 +279,52 @@ class BoSearchEventListener implements EventSubscriberInterface
     }
 
     /**
+     * @param TheliaFormEvent $event
+     */
+    public function addCustomerFamilySearchFormField(TheliaFormEvent $event)
+    {
+        $moduleCustomerFamily = ModuleQuery::create()
+            ->filterByCode('CustomerFamily')
+            ->filterByActivate(1)
+            ->findOne();
+
+        if ($moduleCustomerFamily) {
+            $customerFamilies = CustomerFamilyQuery::create()
+                ->find();
+
+            $lang = $this->request->getSession()->get('thelia.current.lang');
+
+            /** @var CustomerFamily $customerFamily */
+            $familyChoices = ['all' => Translator::getInstance()->trans('All', [], 'bosearch.bo.default')];
+
+            foreach ($customerFamilies as $customerFamily) {
+                $familyChoices[$customerFamily->getId()] = $customerFamily
+                    ->getTranslation($lang->getLocale())
+                    ->getTitle();
+            }
+
+            // Building additional fields
+            $event->getForm()->getFormBuilder()
+            ->add(
+                'family',
+                'choice',
+                array(
+                    'choices' => $familyChoices,
+                    'required' => false,
+                    'label' => Translator::getInstance()->trans(
+                        'Customer family',
+                        [],
+                        \CustomerFamily\CustomerFamily::MESSAGE_DOMAIN
+                    ),
+                    'label_attr' => array(
+                        'for' => 'customerfamily_family_input',
+                    ),
+                )
+            );
+        }
+    }
+
+    /**
      * Returns an array of event names this subscriber wants to listen to.
      *
      * @return array The event names to listen to
@@ -266,6 +339,7 @@ class BoSearchEventListener implements EventSubscriberInterface
             TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_INITIALIZE_ARGS, 'order') => ['changeLimit', 128],
             TheliaEvents::getLoopExtendsEvent(TheliaEvents::LOOP_EXTENDS_BUILD_MODEL_CRITERIA, 'product') => ['extendProductBuildModelCriteria', 120],
 
+            TheliaEvents::FORM_AFTER_BUILD.'.'.CustomerSearchForm::CUSTOMER_FORM_NAME => ['addCustomerFamilySearchFormField', 128],
         ];
     }
 }

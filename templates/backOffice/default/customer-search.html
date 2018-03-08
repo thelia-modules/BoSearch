@@ -62,7 +62,8 @@
 
 
                     <div class="row">
-                        <div class="col-md-3 col-md-offset-2">
+
+                        <div class="col-md-3">
                             {form_field form=$form field="subscriptionDateMin"}
                                 <div class="form-group">
                                     <label class="control-label" for="{$label_attr.for}">
@@ -71,13 +72,13 @@
 
                                     <div class="input-group">
                                         <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" value="{$value}" />
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
                                 </div>
                             {/form_field}
                         </div>
 
-                        <div class="col-md-3 col-md-offset-2">
+                        <div class="col-md-3">
                             {form_field form=$form field="subscriptionDateMax"}
                                 <div class="form-group">
                                     <label class="control-label" for="{$label_attr.for}">
@@ -86,14 +87,15 @@
 
                                     <div class="input-group">
                                         <input type="text" id="{$label_attr.for}" class="form-control is-calendar-input" name="{$name}" value="{$value}" />
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
                                 </div>
                             {/form_field}
                         </div>
-                    </div>
 
-                    {hook name='bosearch.customer-search.form'}
+                        {hook name='bosearch.customer-search.form'}
+
+                    </div>
 
                     <button class="btn btn-info" type="submit">{intl l='Search' d='bosearch.bo.default'}</button>
 
