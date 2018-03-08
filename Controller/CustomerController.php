@@ -48,6 +48,24 @@ class CustomerController extends BaseAdminController
 
         $this->getParserContext()->addForm($baseForm);
 
-        return $this->render('customers');
+        $data = $baseForm->getForm()->getData();
+
+        $choice = [];
+        foreach ($data as $d) {
+            $choice[] = $d;
+        }
+
+        if ($data['company'] === null
+            && $data['lastname'] === null
+            && $data['firstname'] === null
+            && $data['email'] === null
+            && $data['subscriptionDateMin'] === null
+            && $data['subscriptionDateMax'] === null
+            && !empty(array_intersect($choice, ['all']))
+        ) {
+            return $this->generateRedirectFromRoute('admin.customers');
+        } else {
+            return $this->render('customers');
+        }
     }
 }
