@@ -3,6 +3,10 @@
 namespace BoSearch\Form;
 
 use BoSearch\BoSearch;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Thelia\Form\BaseForm;
 use Thelia\Model\CategoryQuery;
 
@@ -15,7 +19,7 @@ class ProductSearchForm extends BaseForm
 {
     const PRODUCT_FORM_NAME = 'product-search-form';
 
-    public function getName()
+    public static function getName()
     {
         return self::PRODUCT_FORM_NAME;
     }
@@ -28,13 +32,13 @@ class ProductSearchForm extends BaseForm
 
         /** @var \Thelia\Model\Category $category */
         foreach ($categoriesList as $category) {
-            $categoriesArray[$category->getId()] = $category->getTitle();
+            $categoriesArray[$category->getTitle()] = $category->getId();
         }
 
         $this->formBuilder
             ->add(
                 'product_id',
-                'integer',
+                IntegerType::class,
                 [
                     'label' => $this->translator->trans('Product ID', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'product_id'],
@@ -42,7 +46,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'ref',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Product reference', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'ref'],
@@ -50,7 +54,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'category',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' =>  $categoriesArray,
                     'multiple' => true,
@@ -60,7 +64,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'is_visible',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => [
                         'all' => 'all',
@@ -74,7 +78,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'is_new',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => [
                         'all' => 'all',
@@ -88,7 +92,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'is_promo',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' => [
                         'all' => 'all',
@@ -102,7 +106,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'stock_min',
-                'number',
+                NumberType::class,
                 [
                     'label' => $this->translator->trans('Minimum stock', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'stock_min'],
@@ -110,7 +114,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'stock_max',
-                'number',
+                NumberType::class,
                 [
                     'label' => $this->translator->trans('Maximum stock', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'stock_max'],
@@ -118,7 +122,7 @@ class ProductSearchForm extends BaseForm
                 ]
             )->add(
                 'page',
-                'number',
+                NumberType::class,
                 [
                     'required' => false
                 ]

@@ -3,6 +3,9 @@
 namespace BoSearch\Form;
 
 use BoSearch\BoSearch;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Thelia\Form\BaseForm;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\OrderStatusQuery;
@@ -27,7 +30,7 @@ class OrderSearchForm extends BaseForm
 
         /** @var \Thelia\Model\OrderStatus $status */
         foreach ($statusList as $status) {
-            $statusArray[$status->getId()] = $status->getTitle();
+            $statusArray[$status->getTitle()] = $status->getId();
         }
 
         // Initialize payment modules
@@ -36,13 +39,13 @@ class OrderSearchForm extends BaseForm
 
         /** @var \Thelia\Model\Module $paymentModule */
         foreach ($paymentModuleList as $paymentModule) {
-            $paymentModuleArray[$paymentModule->getId()] = $paymentModule->getTitle();
+            $paymentModuleArray[$paymentModule->getTitle()] = $paymentModule->getId();
         }
 
         $this->formBuilder
             ->add(
                 'ref',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Order reference', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'ref'],
@@ -50,7 +53,7 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'invoiceRef',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Invoice reference', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'invoiceRef'],
@@ -58,7 +61,7 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'company',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Company', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'company'],
@@ -66,7 +69,7 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'customer',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Customer', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'customer'],
@@ -74,7 +77,7 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'paymentModule',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' =>  $paymentModuleArray,
                     'multiple' => true,
@@ -84,7 +87,7 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'status',
-                'choice',
+                ChoiceType::class,
                 [
                     'choices' =>  $statusArray,
                     'multiple' => true,
@@ -94,30 +97,30 @@ class OrderSearchForm extends BaseForm
                 ]
             )->add(
                 'orderDateMin',
-                "date",
+                DateType::class,
                 [
                     "label" => $this->translator->trans("From", [], BoSearch::DOMAIN_NAME),
                     "label_attr" => ["for" => "orderDateMin"],
                     "required" => false,
                     "input"  => "datetime",
                     "widget" => "single_text",
-                    "format" => "dd/MM/yyyy"
+
                 ]
             )->add(
                 'orderDateMax',
-                'date',
+                DateType::class,
                 [
                     'label' => $this->translator->trans('To', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'orderDateMax'],
                     'required' => false,
                     "input"  => "datetime",
                     "widget" => "single_text",
-                    "format" => "dd/MM/yyyy"
+
                 ]
             );
     }
 
-    public function getName()
+    public static function getName()
     {
         return self::ORDER_FORM_NAME;
     }

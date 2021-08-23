@@ -13,7 +13,7 @@
 {block name="main-content"}
   <div id="wrapper" class="container">
 
-    {if $general_error}
+    {if $general_error|default:null}
       <div class="alert alert-danger">
         {$general_error}
       </div>
@@ -174,7 +174,7 @@
               </tr>
             </thead>
             <tbody>
-              {if $search}
+              {if $search|default:null}
                 {loop type='product' name='searched-products' limit=20 page=$product_page}
                   <tr>
                     <td>{$ID}</td>
@@ -194,7 +194,7 @@
       </div>
     </div>
 
-    {if $search}
+    {if $search|default:null}
 
     <div class="text-center">
       <ul class="pagination pagination-centered">

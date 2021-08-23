@@ -10,6 +10,8 @@ use CustomerFamily\Model\Map\CustomerCustomerFamilyTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\Join;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Thelia\Core\Event\Loop\LoopExtendsBuildModelCriteriaEvent;
 use Thelia\Core\Event\Loop\LoopExtendsInitializeArgsEvent;
 use Thelia\Core\Event\TheliaEvents;
@@ -33,9 +35,9 @@ class BoSearchEventListener implements EventSubscriberInterface
 {
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -55,15 +57,15 @@ class BoSearchEventListener implements EventSubscriberInterface
             if ($data['company'] != null) {
                 // Join address
                 $customerAddressJoin = new Join(
-                    CustomerTableMap::ID,
-                    AddressTableMap::CUSTOMER_ID,
+                    CustomerTableMap::COL_ID,
+                    AddressTableMap::COL_CUSTOMER_ID,
                     Criteria::INNER_JOIN
                 );
 
                 $search->addJoinObject($customerAddressJoin, 'customerAddressJoin');
                 $search->addJoinCondition(
                     'customerAddressJoin',
-                    AddressTableMap::COMPANY." LIKE '%".$data['company']."%'"
+                    AddressTableMap::COL_COMPANY." LIKE '%".$data['company']."%'"
                 );
                 $search->groupBy(CustomerTableMap::ID);
             }
@@ -96,14 +98,14 @@ class BoSearchEventListener implements EventSubscriberInterface
             //Filter by Customer Family
             if ($data['family'] != null && $data['family'] != "all") {
                 $familyCustomerFamilyBoSearch = new Join(
-                    CustomerTableMap::ID,
-                    CustomerCustomerFamilyTableMap::CUSTOMER_ID,
+                    CustomerTableMap::COL_ID,
+                    CustomerCustomerFamilyTableMap::COL_CUSTOMER_ID,
                     Criteria::INNER_JOIN
                 );
                 $search->addJoinObject($familyCustomerFamilyBoSearch, 'familyCustomerFamilyBoSearch');
                 $search->addJoinCondition(
                     'familyCustomerFamilyBoSearch',
-                    CustomerCustomerFamilyTableMap::CUSTOMER_FAMILY_ID.' = ?',
+                    CustomerCustomerFamilyTableMap::COL_CUSTOMER_FAMILY_ID.' = ?',
                     $data['family'],
                     null,
                     PDO::PARAM_STR
@@ -128,67 +130,67 @@ class BoSearchEventListener implements EventSubscriberInterface
             $search = $event->getModelCriteria();
 
             // Filter by order reference
-            if ($data['ref'] != null) {
+            if (array_key_exists('ref', $data) && $data['ref'] != null) {
                 $search->filterByRef("%".$data['ref']."%", Criteria::LIKE);
             }
 
             // Filter by invoice reference
-            if ($data['invoiceRef'] != null) {
+            if (array_key_exists('invoiceRef', $data) && $data['invoiceRef'] != null) {
                 $search->filterByInvoiceRef("%".$data['invoiceRef']."%", Criteria::LIKE);
             }
 
             // Filter by company
-            if ($data['company'] != null) {
+            if (array_key_exists('company', $data) && $data['company'] != null) {
                 // Join invoice address
                 $orderInvoiceAddressJoin = new Join(
-                    OrderTableMap::INVOICE_ORDER_ADDRESS_ID,
-                    OrderAddressTableMap::ID,
+                    OrderTableMap::COL_INVOICE_ORDER_ADDRESS_ID,
+                    OrderAddressTableMap::COL_ID,
                     Criteria::INNER_JOIN
                 );
 
                 $search->addJoinObject($orderInvoiceAddressJoin, 'orderInvoiceAddressJoin');
                 $search->addJoinCondition(
                     'orderInvoiceAddressJoin',
-                    OrderAddressTableMap::COMPANY." LIKE '%".$data['company'] . "%'"
+                    OrderAddressTableMap::COL_COMPANY." LIKE '%".$data['company'] . "%'"
                 );
             }
 
             // Filter by customer
-            if ($data['customer'] != null) {
+            if (array_key_exists('customer', $data) && $data['customer'] != null) {
                 // Join customer
                 $orderAddressJoin = new Join(
-                    OrderTableMap::INVOICE_ORDER_ADDRESS_ID,
-                    OrderAddressTableMap::ID,
+                    OrderTableMap::COL_INVOICE_ORDER_ADDRESS_ID,
+                    OrderAddressTableMap::COL_ID,
                     Criteria::INNER_JOIN
                 );
 
                 $search->addJoinObject($orderAddressJoin, 'orderAddressJoin');
                 $search->addJoinCondition(
                     'orderAddressJoin',
-                    '('.OrderAddressTableMap::FIRSTNAME." LIKE '%".$data['customer']."%' OR ".
-                    OrderAddressTableMap::LASTNAME." LIKE '%".$data['customer']."%')"
+                    '('.OrderAddressTableMap::COL_FIRSTNAME." LIKE '%".$data['customer']."%' OR ".
+                    OrderAddressTableMap::COL_LASTNAME." LIKE '%".$data['customer']."%')"
                 );
 
                 $search->groupById();
             }
 
             // Filter by payment module
-            if ($data['paymentModule'] != null) {
+            if (array_key_exists('paymentModule', $data) && $data['paymentModule'] != null) {
                 $search->filterByPaymentModuleId($data['paymentModule']);
             }
 
             // Filter by status
-            if ($data['status'] != null) {
+            if (array_key_exists('status', $data) && $data['status'] != null) {
                 $search->filterByStatusId($data['status']);
             }
 
             // Filter by order date - from
-            if ($data['orderDateMin'] != null) {
+            if (array_key_exists('orderDateMin', $data) && $data['orderDateMin'] != null) {
                 $search->filterByCreatedAt($data['orderDateMin'], Criteria::GREATER_EQUAL);
             }
 
             // Filter by order date - to
-            if ($data['orderDateMax'] != null) {
+            if (array_key_exists('orderDateMax', $data) && $data['orderDateMax'] != null) {
                 $search->filterByCreatedAt($data['orderDateMax'], Criteria::LESS_EQUAL);
             }
         }
@@ -199,7 +201,7 @@ class BoSearchEventListener implements EventSubscriberInterface
         $data = $this->request->request->get(BoSearch::PARSED_DATA);
         $parameters = $event->getLoopParameters();
 
-        if ($parameters['limit'] != null && $data != null) {
+        if (array_key_exists('limit', $parameters) && $parameters['limit'] != null && $data != null) {
             $parameters['limit'] = 9999999;
             $event->setLoopParameters($parameters);
         }
@@ -298,16 +300,17 @@ class BoSearchEventListener implements EventSubscriberInterface
             $familyChoices = ['all' => Translator::getInstance()->trans('All', [], 'bosearch.bo.default')];
 
             foreach ($customerFamilies as $customerFamily) {
-                $familyChoices[$customerFamily->getId()] = $customerFamily
+                $customerFamilyTitle = $customerFamily
                     ->getTranslation($lang->getLocale())
                     ->getTitle();
+                $familyChoices[$customerFamilyTitle] = $customerFamily->getId();
             }
 
             // Building additional fields
             $event->getForm()->getFormBuilder()
             ->add(
                 'family',
-                'choice',
+                ChoiceType::class,
                 array(
                     'choices' => $familyChoices,
                     'required' => false,
