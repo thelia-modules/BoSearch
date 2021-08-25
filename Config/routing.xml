@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="bosearch.customer.search" path="/admin/module/bosearch/customer-search" methods="post">
+    <!--<route id="bosearch.customer.search" path="/admin/module/bosearch/customer-search" methods="post">
         <default key="_controller">BoSearch:Customer:search</default>
     </route>
 
@@ -22,7 +22,7 @@
 
     <route id="bosearch.product.search.post" path="/admin/module/bosearch/product-search" methods="post">
         <default key="_controller">BoSearch:Product:search</default>
-    </route>
+    </route>-->
 
 
 </routes>

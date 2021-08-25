@@ -3,6 +3,8 @@
 namespace BoSearch\Form;
 
 use BoSearch\BoSearch;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Thelia\Form\BaseForm;
 
 /**
@@ -22,7 +24,7 @@ class CustomerSearchForm extends BaseForm
         $this->formBuilder
             ->add(
                 'company',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Company', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'company'],
@@ -30,7 +32,7 @@ class CustomerSearchForm extends BaseForm
                 ]
             )->add(
                 'lastname',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Lastname', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'lastname'],
@@ -38,7 +40,7 @@ class CustomerSearchForm extends BaseForm
                 ]
             )->add(
                 'firstname',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Firstname', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'firstname'],
@@ -46,7 +48,7 @@ class CustomerSearchForm extends BaseForm
                 ]
             )->add(
                 'email',
-                'text',
+                TextType::class,
                 [
                     'label' => $this->translator->trans('Email', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'email'],
@@ -54,30 +56,30 @@ class CustomerSearchForm extends BaseForm
                 ]
             )->add(
                 'subscriptionDateMin',
-                "date",
+                DateType::class,
                 [
                     "label" => $this->translator->trans("From", [], BoSearch::DOMAIN_NAME),
                     "label_attr" => ["for" => "subscriptionDateMin"],
                     "required" => false,
                     "input"  => "datetime",
                     "widget" => "single_text",
-                    "format" => "dd/MM/yyyy"
+//                    "format" => "dd/MM/yyyy"
                 ]
             )->add(
                 'subscriptionDateMax',
-                'date',
+                DateType::class,
                 [
                     'label' => $this->translator->trans('To', [], BoSearch::DOMAIN_NAME),
                     'label_attr' => ['for' => 'subscriptionDateMax'],
                     'required' => false,
                     "input"  => "datetime",
                     "widget" => "single_text",
-                    "format" => "dd/MM/yyyy"
+//                    "format" => "dd/MM/yyyy"
                 ]
             );
     }
 
-    public function getName()
+    public static function getName()
     {
         return self::CUSTOMER_FORM_NAME;
     }

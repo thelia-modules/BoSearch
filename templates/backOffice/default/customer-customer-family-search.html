@@ -1,5 +1,5 @@
 <div class="col-md-3 ">
-    {form_field form=$form field="family"}
+    {form_field form=$form|default:null field="family"}
     <div class="form-group">
         <label for="{$label_attr.for}" class="control-label">
             {$label}
