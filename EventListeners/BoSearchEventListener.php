@@ -47,7 +47,7 @@ class BoSearchEventListener implements EventSubscriberInterface
     public function extendCustomerLoop(LoopExtendsBuildModelCriteriaEvent $event)
     {
         // Get form data
-        $data = $this->request->request->get(BoSearch::PARSED_DATA);
+        $data = $this->request->get(BoSearch::PARSED_DATA);
 
         if ($data != null) {
 
@@ -122,7 +122,7 @@ class BoSearchEventListener implements EventSubscriberInterface
     public function extendOrderLoop(LoopExtendsBuildModelCriteriaEvent $event)
     {
         // Get form data
-        $data = $this->request->request->get(BoSearch::PARSED_DATA);
+        $data = $this->request->get(BoSearch::PARSED_DATA);
 
         if ($data != null) {
 
@@ -198,7 +198,7 @@ class BoSearchEventListener implements EventSubscriberInterface
 
     public function changeLimit(LoopExtendsInitializeArgsEvent $event)
     {
-        $data = $this->request->request->get(BoSearch::PARSED_DATA);
+        $data = $this->request->get(BoSearch::PARSED_DATA);
         $parameters = $event->getLoopParameters();
 
         if (array_key_exists('limit', $parameters) && $parameters['limit'] != null && $data != null) {
@@ -210,7 +210,7 @@ class BoSearchEventListener implements EventSubscriberInterface
     public function extendProductBuildModelCriteria(LoopExtendsBuildModelCriteriaEvent $event)
     {
         // Get form data
-        $data = $this->request->request->get(BoSearch::PARSED_DATA);
+        $data = $this->request->get(BoSearch::PARSED_DATA);
 
         if ($data != null) {
             /** @var \Thelia\Model\ProductQuery $search */
