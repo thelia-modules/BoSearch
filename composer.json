@@ -7,5 +7,6 @@
   },
   "extra": {
     "installer-name": "BoSearch"
-  }
+  },
+  "abandoned": true
 }

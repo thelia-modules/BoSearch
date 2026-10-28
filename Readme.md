@@ -1,5 +1,8 @@
 # Bo Search
 
+> This module is no longer maintained and will not be ported to Thelia 3. Its 2.x versions remain available on Packagist.
+> There is no replacement module.
+
 Add search forms to filter customers, orders and products
 
 ## Installation
